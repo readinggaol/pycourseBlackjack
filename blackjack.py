@@ -4,8 +4,20 @@ import db as db
 def main():
     deck = bf.createDeck()
     pool = 0
-    bf.getPlayerWager(pool)
-    bf.getPlayerWager(pool)
+    dealerHand = bf.dealHandOfCards(deck)
+    playerHand = bf.dealHandOfCards(deck)
+    willHit = True
+
+    bf.displayTitleInfo()
+
+    while True:
+        # bf.getPlayerWager(pool)
+        bf.displayDealerShowCard(dealerHand)
+        while willHit:
+            bf.displayPlayerHand(playerHand)
+            print(bf.countHandValue(playerHand))
+            willHit = bf.decideHitOrStand(deck, playerHand)
+
 
 
 

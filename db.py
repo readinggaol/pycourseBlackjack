@@ -2,15 +2,13 @@ import csv
 
 def loadPlayerMoney():
     playerMoney = 0
-    with open("money", "r", newline="") as file:
-        reader = csv.reader(file)
-        playerMoney = next(reader)
-
-    return int(playerMoney[0])
+    with open("money.txt", "r", newline="") as file:
+        playerMoney = file.readline()
+    return int(playerMoney)
 
 
-def subtractPlayerMoney(value):
-        with open("money", "w") as file:
-            writer = csv.writer(file)
-            writer.writerow(value)
-        return True
+def subtractPlayerMoney(wager):
+    currentPlayerMoney = loadPlayerMoney()
+    newPlayerMoney = currentPlayerMoney - wager
+    with open("money.txt", "w") as file:
+        file.write(str(newPlayerMoney))
