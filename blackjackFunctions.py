@@ -98,14 +98,22 @@ def isBusted(hand):
 
     #if they have an ace and are above 21, start converting aces to 1 ONE AT A TIME
     #check to see if 21 is exceeded after converting each ace
+    #after you change each ace value, change its rank to "a"
+    #this will make it so that the handHasAce function will ACTUALLY only return true on "big" aces
+    #it's maybe a little weird but simpler to read than some other alternatives
     while handTotal > 21 and hasAce == True:
         for card in hand:
-            if card[1] == "A" and card[2] == 11:
+            if card[1] == "A":
                 card[2] == 1
+                card[1] == "a"
                 break
+        hasAce = handHasAce(hand)
         handTotal = countHandValue(hand)
 
-
+    if handTotal > 21:
+        return True
+    else:
+        return False
 
 
 
