@@ -60,6 +60,12 @@ def displayPlayerHand(hand):
         print(card[1] + " of " + card[0].title())
 
 
+def displayDealerHand(hand):
+    print("\nDEALER'S CARDS:")
+    for card in hand:
+        print(card[1] + " of " + card[0].title())
+
+
 def decideHitOrStand(deck, hand):
     while True:
         userChoice = input("\nHit or stand? (hit/stand): ")
@@ -114,6 +120,41 @@ def isBusted(hand):
         return True
     else:
         return False
+
+
+def displayScoreDetermineWinner(playerHand, dealerHand):
+    playerScore = countHandValue(playerHand)
+    dealerScore = countHandValue(dealerHand)
+
+    #print scores
+    if playerScore > 21:
+        print("\nYOUR SCORE:\t" + "BUSTED")
+    else:
+        print("\nYOUR SCORE:\t" + str(playerScore))
+
+    if dealerScore > 21:
+        print("\nDEALER'S SCORE:\t" + "BUSTED")
+    else:
+        print("\nDEALER'S SCORE:\t" + str(dealerScore))
+
+    #print result and handle money
+    if isBusted(playerHand) and isBusted(dealerHand):
+        print("Everyone busts.")
+    elif not isBusted(playerHand) and isBusted(dealerHand):
+        print("Player wins and dealer busts!")
+    elif isBusted(playerHand) and not isBusted(dealerHand):
+        print("Player busts and dealer wins!")
+    #At this point I stop checking for busts because it's unnecessary
+    elif playerScore == dealerScore:
+        print("It's a tie!")
+    elif playerScore > dealerScore:
+        print("Player wins!")
+    elif dealerScore > playerScore:
+        print("Dealer wins!")
+    else:
+        print("I'm not sure what could cause this...uh oh.")
+
+
 
 
 
