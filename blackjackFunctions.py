@@ -24,13 +24,18 @@ def createDeck():
 
 
 def dealHandOfCards(deck):
+    #pop is used here instead of choice because the cards need to actually disappear from the deck when dealt
     newHand = []
-    newHand.append(r.choice(deck))
-    newHand.append(r.choice(deck))
+    index = r.randint(0, len(deck) - 1)
+    newCard = deck.pop(index)
+    newHand.append(newCard)
+    index = r.randint(0, len(deck) - 1)
+    newCard = deck.pop(index)
+    newHand.append(newCard)
     return newHand
 
 
-def getPlayerWager(pool):
+def getPlayerWager():
     playerMoney = round(db.loadPlayerMoney(), 2)
     print("Money: " + str(playerMoney))
 
@@ -40,13 +45,14 @@ def getPlayerWager(pool):
             print("Insufficient funds. Please place a valid wager.")
             continue
         else:
-            db.subtractPlayerMoney(wagerAmount)
             break
+    return wagerAmount
 
 
 def dealAnotherCard(deck, hand):
-    hand.append(r.choice(deck))
-    return hand
+    index = r.randint(0, len(deck) - 1)
+    newCard = deck.pop(index)
+    hand.append(newCard)
 
 
 def displayDealerShowCard(hand):
@@ -122,7 +128,7 @@ def isBusted(hand):
         return False
 
 
-def displayScoreDetermineWinner(playerHand, dealerHand):
+def displayScoreDetermineWinner(playerHand, dealerHand, wager):
     playerScore = countHandValue(playerHand)
     dealerScore = countHandValue(dealerHand)
 
@@ -142,15 +148,19 @@ def displayScoreDetermineWinner(playerHand, dealerHand):
         print("Everyone busts.")
     elif not isBusted(playerHand) and isBusted(dealerHand):
         print("Player wins and dealer busts!")
+        db.addPlayerMoney(wager)
     elif isBusted(playerHand) and not isBusted(dealerHand):
         print("Player busts and dealer wins!")
+        db.subtractPlayerMoney(wager)
     #At this point I stop checking for busts because it's unnecessary
     elif playerScore == dealerScore:
         print("It's a tie!")
     elif playerScore > dealerScore:
         print("Player wins!")
+        db.addPlayerMoney(wager)
     elif dealerScore > playerScore:
         print("Dealer wins!")
+        db.subtractPlayerMoney(wager)
     else:
         print("I'm not sure what could cause this...uh oh.")
 

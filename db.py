@@ -12,3 +12,9 @@ def subtractPlayerMoney(wager):
     newPlayerMoney = currentPlayerMoney - wager
     with open("money.txt", "w") as file:
         file.write(str(newPlayerMoney))
+
+def addPlayerMoney(wager):
+    currentPlayerMoney = loadPlayerMoney()
+    newPlayerMoney = currentPlayerMoney + wager
+    with open("money.txt", "w") as file:
+        file.write(str(newPlayerMoney))

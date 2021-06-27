@@ -3,7 +3,6 @@ import db as db
 
 def main():
     deck = bf.createDeck()
-    pool = 0
     dealerHand = bf.dealHandOfCards(deck)
     playerHand = bf.dealHandOfCards(deck)
     willHit = True
@@ -11,7 +10,7 @@ def main():
     bf.displayTitleInfo()
 
     while True:
-        # bf.getPlayerWager(pool)
+        wager = bf.getPlayerWager()
         bf.displayDealerShowCard(dealerHand)
 
         #handle all player actions here
@@ -22,6 +21,7 @@ def main():
             willHit = bf.decideHitOrStand(deck, playerHand)
             if(bf.isBusted(playerHand)):
                 print("You busted!")
+                bf.displayPlayerHand(playerHand)
                 break
             else:
                 continue
@@ -32,7 +32,7 @@ def main():
             bf.dealAnotherCard(deck, dealerHand)
 
         bf.displayDealerHand(dealerHand)
-        bf.displayScoreDetermineWinner(playerHand, dealerHand)
+        bf.displayScoreDetermineWinner(playerHand, dealerHand, wager)
         break
 
 
