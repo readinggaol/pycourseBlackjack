@@ -1,7 +1,6 @@
 import csv
 
 def loadPlayerMoney():
-    playerMoney = 0
     with open("money.txt", "r", newline="") as file:
         playerMoney = file.readline()
     return int(playerMoney)

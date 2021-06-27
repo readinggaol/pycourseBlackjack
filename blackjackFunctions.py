@@ -36,8 +36,10 @@ def dealHandOfCards(deck):
 
 
 def getPlayerWager():
+    #**NOTE** no subtraction is actually done here, because the game could quit before
+    #the player actually wins or loses
     playerMoney = round(db.loadPlayerMoney(), 2)
-    print("Money: " + str(playerMoney))
+    print("\nMoney: " + str(float(playerMoney)))
 
     while True:
         wagerAmount = int(input("Bet amount: "))
@@ -132,37 +134,55 @@ def displayScoreDetermineWinner(playerHand, dealerHand, wager):
     playerScore = countHandValue(playerHand)
     dealerScore = countHandValue(dealerHand)
 
-    #print scores
+    #print scores -------------------------
     if playerScore > 21:
-        print("\nYOUR SCORE:\t" + "BUSTED")
+        print("\nYOUR POINTS:\t\t" + "BUSTED")
     else:
-        print("\nYOUR SCORE:\t" + str(playerScore))
+        print("\nYOUR POINTS:\t\t" + str(playerScore))
 
     if dealerScore > 21:
-        print("\nDEALER'S SCORE:\t" + "BUSTED")
+        print("\nDEALER'S POINTS:\t" + "BUSTED")
     else:
-        print("\nDEALER'S SCORE:\t" + str(dealerScore))
+        print("\nDEALER'S POINTS:\t" + str(dealerScore))
 
-    #print result and handle money
+    #print result and handle money -----------------
     if isBusted(playerHand) and isBusted(dealerHand):
-        print("Everyone busts.")
+        print("\nEveryone busts.")
     elif not isBusted(playerHand) and isBusted(dealerHand):
-        print("Player wins and dealer busts!")
+        print("\nPlayer wins and dealer busts!")
         db.addPlayerMoney(wager)
     elif isBusted(playerHand) and not isBusted(dealerHand):
-        print("Player busts and dealer wins!")
+        print("\nPlayer busts and dealer wins!")
         db.subtractPlayerMoney(wager)
     #At this point I stop checking for busts because it's unnecessary
     elif playerScore == dealerScore:
-        print("It's a tie!")
+        print("\nIt's a tie!")
     elif playerScore > dealerScore:
-        print("Player wins!")
-        db.addPlayerMoney(wager)
+        if playerScore == 21:
+            print("\nBLACKJACK! 3:2 Payout of: " + str(wager * 1.5))
+            db.addPlayerMoney((wager * 1.5))
+        else:
+            print("\nPlayer wins!")
+            db.addPlayerMoney(wager)
     elif dealerScore > playerScore:
-        print("Dealer wins!")
+        print("\nDealer wins!")
         db.subtractPlayerMoney(wager)
     else:
-        print("I'm not sure what could cause this...uh oh.")
+        print("Unknown error.")
+
+
+def willPlayAgain():
+    while True:
+        userChoice = input("Play again? (y/n): ")
+        if userChoice.lower() != "y" and userChoice.lower() != "n":
+            print("Please enter a valid command.")
+            continue
+        else:
+            if userChoice == "y":
+                return True
+            else:
+                return False
+
 
 
 

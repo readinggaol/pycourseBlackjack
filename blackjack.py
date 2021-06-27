@@ -6,10 +6,11 @@ def main():
     dealerHand = bf.dealHandOfCards(deck)
     playerHand = bf.dealHandOfCards(deck)
     willHit = True
+    playAgain = True
 
     bf.displayTitleInfo()
 
-    while True:
+    while playAgain:
         wager = bf.getPlayerWager()
         bf.displayDealerShowCard(dealerHand)
 
@@ -17,7 +18,6 @@ def main():
         #modifying the player hand before coming to the end
         while willHit:
             bf.displayPlayerHand(playerHand)
-            print(bf.countHandValue(playerHand))
             willHit = bf.decideHitOrStand(deck, playerHand)
             if(bf.isBusted(playerHand)):
                 print("You busted!")
@@ -33,7 +33,9 @@ def main():
 
         bf.displayDealerHand(dealerHand)
         bf.displayScoreDetermineWinner(playerHand, dealerHand, wager)
-        break
+        print("Money: " + str(float(db.loadPlayerMoney())))
+
+        playAgain = bf.willPlayAgain()
 
 
 
