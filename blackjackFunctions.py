@@ -35,19 +35,65 @@ def dealHandOfCards(deck):
     return newHand
 
 
-def getPlayerWager():
-    #**NOTE** no subtraction is actually done here, because the game could quit before
-    #the player actually wins or loses
-    playerMoney = round(db.loadPlayerMoney(), 2)
-    print("\nMoney: " + str(float(playerMoney)))
+def isBankrupt():
+    playerMoney = db.loadPlayerMoney()
+    if playerMoney < 5:
+        return True
+    else:
+        return False
 
+
+def topUpBank():
     while True:
-        wagerAmount = int(input("Bet amount: "))
-        if (playerMoney - wagerAmount) < 0:
-            print("Insufficient funds. Please place a valid wager.")
-            continue
+        try:
+            print("Your account's funds are lower than the minimum bet. Please deposit additional funds.")
+            newChips = int(input("Additional funds: "))
+            break
+        except ValueError:
+            print("Please enter a valid integer.")
+        except Exception:
+            print("Data error. Please enter a valid integer")
+
+        if newChips < 0:
+            print("You must enter a positive integer amount.")
         else:
             break
+
+    db.addPlayerMoney(newChips)
+
+
+def getPlayerWager():
+    try:
+        playerMoney = round(db.loadPlayerMoney(), 2)
+    except TypeError:
+        print("File not loaded successfully. Exiting program.")
+        exit()
+    except Exception:
+        print("Error fetching money value. Exiting program.")
+        exit()
+
+
+    print("\nMoney: " + str(float(playerMoney)))
+
+    #**NOTE** no subtraction is actually done here, because the game could quit before
+    #the player actually wins or loses
+    while True:
+        try:
+            wagerAmount = int(input("Bet amount: "))
+        except ValueError:
+            print("Please enter a valid integer.")
+        except Exception:
+            print("Data error. Please enter a valid integer")
+
+        if wagerAmount > 1000:
+            print("Wager cannot exceed 1000.")
+        elif wagerAmount < 5:
+            print("Wager must be at least 5.")
+        elif (playerMoney - wagerAmount) < 0:
+            print("Insufficient funds. Please place a valid wager.")
+        else:
+            break
+
     return wagerAmount
 
 

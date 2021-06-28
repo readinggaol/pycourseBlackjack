@@ -1,6 +1,7 @@
 import blackjackFunctions as bf
 import db as db
 
+
 def main():
     deck = bf.createDeck()
     dealerHand = bf.dealHandOfCards(deck)
@@ -11,6 +12,9 @@ def main():
     bf.displayTitleInfo()
 
     while playAgain:
+        if(bf.isBankrupt()):
+            bf.topUpBank()
+
         wager = bf.getPlayerWager()
         bf.displayDealerShowCard(dealerHand)
 
@@ -33,9 +37,11 @@ def main():
 
         bf.displayDealerHand(dealerHand)
         bf.displayScoreDetermineWinner(playerHand, dealerHand, wager)
-        print("Money: " + str(float(db.loadPlayerMoney())))
+        print("Money: " + str(db.loadPlayerMoney()))
 
         playAgain = bf.willPlayAgain()
+
+    print("Bye!")
 
 
 

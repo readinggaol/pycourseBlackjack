@@ -1,9 +1,14 @@
 import csv
 
 def loadPlayerMoney():
-    with open("money.txt", "r", newline="") as file:
-        playerMoney = file.readline()
-    return int(playerMoney)
+    try:
+        with open("money.txt", "r", newline="") as file:
+            playerMoney = float(file.readline())
+        return int(playerMoney)
+    except FileNotFoundError:
+        print("Could not find the file named 'money.txt'.")
+    except Exception:
+        print("Must be the wrong error?")
 
 
 def subtractPlayerMoney(wager):
