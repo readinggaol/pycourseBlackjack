@@ -23,6 +23,43 @@ def createDeck():
     return deck
 
 
+def ASCIICards(hand):
+    #spade U2664, heart U2661, club U2667, diamond U2662
+    asciiHand = []
+    template = [["+---+---+---+"],
+            ["|   ", "|   ", "|   ", "|"],
+            ["+---+---+---+"],
+            ["|   ", "|   ",  "|   ", "|"],
+            ["+---+---+---+"],
+            ["|   ", "|   ",  "|   ", "|"],
+            ["+---+---+---+"],]
+    for card in hand:
+        template[1][0] = "| " + card[1] + " "
+        template[5][2] = "| " + card[1] + " "
+        if card[0] == "spades":
+            template[1][2] == "| " + "♤" + " "
+            template[5][0] == "| " + "♤" + " "
+        elif card[0] == "hearts":
+            template[1][2] == "| " + "♡" + " "
+            template[5][0] == "| " + "♡" + " "
+        elif card[0] == "diamonds":
+            template[1][2] == "| " + "♢" + " "
+            template[5][0] == "| " + "♢" + " "
+        elif card[0] == "clubs":
+            template[1][2] == "| " + "♧" + " "
+            template[5][0] == "| " + "♧" + " "
+        createdCard = ""
+        for line in template:
+            counter = 0
+            while counter < len(line):
+                createdCard += line[counter]
+                counter += 1
+            createdCard += "\n"
+        asciiHand.append(createdCard)
+
+    return asciiHand
+
+
 def dealHandOfCards(deck):
     #pop is used here instead of choice because the cards need to actually disappear from the deck when dealt
     newHand = []
@@ -105,7 +142,10 @@ def dealAnotherCard(deck, hand):
 
 def displayDealerShowCard(hand):
     print("\nDEALER'S SHOW CARD: ")
-    print(hand[0][1] + " of " + hand[0][0].title())
+    # print(hand[0][1] + " of " + hand[0][0].title())
+    funHand = ASCIICards(hand)
+    print(funHand[0])
+
 
 
 def displayPlayerHand(hand):
