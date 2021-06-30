@@ -36,18 +36,19 @@ def ASCIICards(hand):
     for card in hand:
         template[1][0] = "| " + card[1] + " "
         template[5][2] = "| " + card[1] + " "
+        template[3][1] = "| " + "⚔" + " "
         if card[0] == "spades":
-            template[1][2] == "| " + "♤" + " "
-            template[5][0] == "| " + "♤" + " "
+            template[1][2] = "| " + "♤" + " "
+            template[5][0] = "| " + "♤" + " "
         elif card[0] == "hearts":
-            template[1][2] == "| " + "♡" + " "
-            template[5][0] == "| " + "♡" + " "
+            template[1][2] = "| " + "♡" + " "
+            template[5][0] = "| " + "♡" + " "
         elif card[0] == "diamonds":
-            template[1][2] == "| " + "♢" + " "
-            template[5][0] == "| " + "♢" + " "
+            template[1][2] = "| " + "♢" + " "
+            template[5][0] = "| " + "♢" + " "
         elif card[0] == "clubs":
-            template[1][2] == "| " + "♧" + " "
-            template[5][0] == "| " + "♧" + " "
+            template[1][2] = "| " + "♧" + " "
+            template[5][0] = "| " + "♧" + " "
         createdCard = ""
         for line in template:
             counter = 0
