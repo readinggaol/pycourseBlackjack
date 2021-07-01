@@ -25,38 +25,27 @@ def createDeck():
 
 def ASCIICards(hand):
     #spade U2664, heart U2661, club U2667, diamond U2662
-    asciiHand = []
-    template = [["+---+---+---+"],
-            ["|   ", "|   ", "|   ", "|"],
-            ["+---+---+---+"],
-            ["|   ", "|   ",  "|   ", "|"],
-            ["+---+---+---+"],
-            ["|   ", "|   ",  "|   ", "|"],
-            ["+---+---+---+"],]
+    asciiHand = ["","","","","","",""]
+
     for card in hand:
-        template[1][0] = "| " + card[1] + " "
-        template[5][2] = "| " + card[1] + " "
-        template[3][1] = "| " + "⚔" + " "
+        asciiHand[0] += "+---+---+---+   "
+        asciiHand[2] += "+---+---+---+   "
+        asciiHand[3] += "|   | ⚔ |   |   "
+        asciiHand[4] += "+---+---+---+   "
+        asciiHand[6] += "+---+---+---+   "
+
         if card[0] == "spades":
-            template[1][2] = "| " + "♤" + " "
-            template[5][0] = "| " + "♤" + " "
+            asciiHand[1] += "| " + card[1] + " |   | ♤ |   "
+            asciiHand[5] += "| ♤ |   | " + card[1] + " |   "
         elif card[0] == "hearts":
-            template[1][2] = "| " + "♡" + " "
-            template[5][0] = "| " + "♡" + " "
+            asciiHand[1] += "| " + card[1] + " |   | ♡ |   "
+            asciiHand[5] += "| ♡ |   | " + card[1] + " |   "
         elif card[0] == "diamonds":
-            template[1][2] = "| " + "♢" + " "
-            template[5][0] = "| " + "♢" + " "
+            asciiHand[1] += "| " + card[1] + " |   | ♢ |   "
+            asciiHand[5] += "| ♢ |   | " + card[1] + " |   "
         elif card[0] == "clubs":
-            template[1][2] = "| " + "♧" + " "
-            template[5][0] = "| " + "♧" + " "
-        createdCard = ""
-        for line in template:
-            counter = 0
-            while counter < len(line):
-                createdCard += line[counter]
-                counter += 1
-            createdCard += "\n"
-        asciiHand.append(createdCard)
+            asciiHand[1] += "| " + card[1] + " |   | ♧ |   "
+            asciiHand[5] += "| ♧ |   | " + card[1] + " |   "
 
     return asciiHand
 
@@ -145,20 +134,23 @@ def displayDealerShowCard(hand):
     print("\nDEALER'S SHOW CARD: ")
     # print(hand[0][1] + " of " + hand[0][0].title())
     funHand = ASCIICards(hand)
-    print(funHand[0])
+    for line in funHand:
+        print(line[0:13])
 
 
 
 def displayPlayerHand(hand):
     print("\nYOUR CARDS:")
-    for card in hand:
-        print(card[1] + " of " + card[0].title())
+    funHand = ASCIICards(hand)
+    for line in funHand:
+        print(line)
 
 
 def displayDealerHand(hand):
     print("\nDEALER'S CARDS:")
-    for card in hand:
-        print(card[1] + " of " + card[0].title())
+    funHand = ASCIICards(hand)
+    for line in funHand:
+        print(line)
 
 
 def decideHitOrStand(deck, hand):
