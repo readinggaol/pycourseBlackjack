@@ -109,8 +109,10 @@ def getPlayerWager():
             wagerAmount = int(input("Bet amount: "))
         except ValueError:
             print("Please enter a valid integer.")
+            continue
         except Exception:
             print("Data error. Please enter a valid integer")
+            continue
 
         if wagerAmount > 1000:
             print("Wager cannot exceed 1000.")
@@ -197,8 +199,8 @@ def isBusted(hand):
     while handTotal > 21 and hasAce == True:
         for card in hand:
             if card[1] == "A":
-                card[2] == 1
-                card[1] == "a"
+                card[2] = 1
+                card[1] = "a"
                 break
         hasAce = handHasAce(hand)
         handTotal = countHandValue(hand)
