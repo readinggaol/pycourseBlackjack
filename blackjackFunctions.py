@@ -44,38 +44,37 @@ def isBankrupt():
 
 
 def topUpBank():
+    print("Your account's funds are lower than the minimum bet. Please deposit additional funds.")
     while True:
         try:
-            print("Your account's funds are lower than the minimum bet. Please deposit additional funds.")
             newChips = int(input("Additional funds: "))
+            if newChips < 5:
+                print("You must enter a positive integer of at least 5.")
+                continue
             break
         except ValueError:
             print("Please enter a valid integer.")
-        except Exception:
-            print("Data error. Please enter a valid integer")
-
-        if newChips < 0:
-            print("You must enter a positive integer amount.")
-        else:
-            break
+        except Exception as e:
+            print("Unexpected error. Shutting down program.", type(e), e)
+            exit()
 
     db.addPlayerMoney(newChips)
 
 
 def getPlayerWager():
+    #get the player's current balance so we can make sure they have the money they want to bet
     try:
         playerMoney = round(db.loadPlayerMoney(), 2)
     except TypeError:
         print("File not loaded successfully. Exiting program.")
         exit()
-    except Exception:
-        print("Error fetching money value. Exiting program.")
+    except Exception as e:
+        print("Error fetching money value. Exiting program.", type(e), e)
         exit()
-
 
     print("\nMoney: " + str(float(playerMoney)))
 
-    #**NOTE** no subtraction is actually done here, because the game could quit before
+    #**NOTE** no subtraction is actually done here, because the game could theoretically quit/crash before
     #the player actually wins or loses
     while True:
         try:
@@ -83,9 +82,9 @@ def getPlayerWager():
         except ValueError:
             print("Please enter a valid integer.")
             continue
-        except Exception:
-            print("Data error. Please enter a valid integer")
-            continue
+        except Exception as e:
+            print("Fatal error. Exiting program.", type(e), e)
+            exit()
 
         if wagerAmount > 1000:
             print("Wager cannot exceed 1000.")
@@ -113,7 +112,7 @@ def displayDealerShowCard(hand):
 def displayPlayerHand(hand):
     print("\nYOUR CARDS:")
     for card in hand:
-        print(card[1] + " of " + card[0].title())
+        print(card[1].title() + " of " + card[0].title())
 
 
 def displayDealerHand(hand):
@@ -155,14 +154,14 @@ def handHasAce(hand):
 
 
 def isBusted(hand):
+    # if they have an ace and are above 21, start converting aces to 1 ONE AT A TIME
+    # check to see if 21 is exceeded after converting each ace
+    # after you change each ace value, change its rank to "a"
+    # this will make it so that the handHasAce function will ACTUALLY only return true on "big" aces
+    # it's maybe a little weird but simpler to read than my other alternatives
     handTotal = countHandValue(hand)
     hasAce = handHasAce(hand)
 
-    #if they have an ace and are above 21, start converting aces to 1 ONE AT A TIME
-    #check to see if 21 is exceeded after converting each ace
-    #after you change each ace value, change its rank to "a"
-    #this will make it so that the handHasAce function will ACTUALLY only return true on "big" aces
-    #it's maybe a little weird but simpler to read than my other alternatives
     while handTotal > 21 and hasAce == True:
         for card in hand:
             if card[1] == "A":
@@ -208,7 +207,7 @@ def displayScoreDetermineWinner(playerHand, dealerHand, wager):
     elif playerScore > dealerScore:
         if playerScore == 21:
             print("\nBLACKJACK! 3:2 Payout of: " + str(wager * 1.5))
-            db.addPlayerMoney((wager * 1.5))
+            db.addPlayerMoney(round((wager * 1.5), 2))
         else:
             print("\nPlayer wins!")
             db.addPlayerMoney(wager)

@@ -3,9 +3,7 @@ import db as db
 
 
 def main():
-
     playAgain = True
-
     bf.displayTitleInfo()
 
     while playAgain:
