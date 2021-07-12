@@ -204,7 +204,7 @@ def displayScoreDetermineWinner(playerHand, dealerHand, wager):
     #At this point I stop checking for busts because it's unnecessary
     elif playerScore == dealerScore:
         print("\nIt's a tie!")
-    elif playerScore > dealerScore:
+    elif playerScore > dealerScore or (playerScore < dealerScore and isBusted(dealerHand)):
         if playerScore == 21:
             print("\nBLACKJACK! 3:2 Payout of: " + str(wager * 1.5))
             db.addPlayerMoney(round((wager * 1.5), 2))

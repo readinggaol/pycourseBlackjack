@@ -34,7 +34,7 @@ def main():
 
         #handle all dealer actions here
         #modifying the dealer hand before coming to the end
-        while not bf.isBusted(dealerHand) and bf.countHandValue(dealerHand) < 17:
+        while not bf.isBusted(dealerHand) and bf.countHandValue(dealerHand) < 17 and not bf.isBusted(playerHand):
             bf.dealAnotherCard(deck, dealerHand)
 
         bf.displayDealerHand(dealerHand)
